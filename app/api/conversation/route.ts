@@ -10,16 +10,18 @@ const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
   try {
-    const { useId } = auth();
+    const { userId } = auth();
     const body = await req.json();
     const { messages } = body;
 
-    if (!useId) {
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!configuration.apikey) {
-      return new NextResponse("OpenAI API Key not configured", { status: 500 });
+    if (!configuration.apiKey) {
+      return new NextResponse("OpenAI API Key not configured.", {
+        status: 500,
+      });
     }
 
     if (!messages) {
@@ -31,9 +33,9 @@ export async function POST(req: Request) {
       messages,
     });
 
-    return NextResponse.json(response.data.choices[0], message);
-  } catch (err) {
-    console.log("[CONVERSATION_ERROR]", err);
-    return new NextResponse("Internal error", { status: 500 });
+    return NextResponse.json(response.data.choices[0].message);
+  } catch (error) {
+    console.log("[CONVERSATION_ERROR]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
