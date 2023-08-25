@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Code,
   ImageIcon,
-  LayoutDashboard,
   MessageSquare,
   Music,
   VideoIcon,

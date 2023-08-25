@@ -18,8 +18,10 @@ import Loader from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
+import { useProModal } from "@/app/hooks/useProModal";
 
 const ConversationPage = () => {
+  const proModal = useProModal();
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
@@ -44,9 +46,13 @@ const ConversationPage = () => {
       });
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
-    } catch (err) {
-      // todo: open pro model
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
+      // } else {
+      //   toast.error("Something went wrong.");
+      // }
     } finally {
       router.refresh();
     }

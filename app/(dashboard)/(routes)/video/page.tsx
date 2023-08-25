@@ -14,8 +14,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { formSchema } from "./constants";
+import { useProModal } from "@/app/hooks/useProModal";
 
 const VideoPage = () => {
+  const proModal = useProModal();
   const router = useRouter();
   const [video, setVideo] = useState<string>();
 
@@ -34,9 +36,10 @@ const VideoPage = () => {
       const response = await axios.post("/api/video", values);
       setVideo(response.data[0]);
       form.reset();
-    } catch (err) {
-      // todo: open pro model
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

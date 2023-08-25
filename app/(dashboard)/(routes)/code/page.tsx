@@ -19,8 +19,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { formSchema } from "./constants";
 import ReactMarkdown from "react-markdown";
+import { useProModal } from "@/app/hooks/useProModal";
 
 const CodePage = () => {
+  const proModal = useProModal();
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
@@ -46,9 +48,10 @@ const CodePage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (err) {
-      // todo: open pro model
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }
