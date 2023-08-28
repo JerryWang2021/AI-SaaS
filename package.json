@@ -29,7 +29,7 @@
     "crisp-sdk-web": "^1.0.21",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.18",
-    "lucide-react": "^0.268.0",
+    "lucide-react": "^0.259.0",
     "next": "13.4.18",
     "openai": "^3.3.0",
     "postcss": "8.4.28",
